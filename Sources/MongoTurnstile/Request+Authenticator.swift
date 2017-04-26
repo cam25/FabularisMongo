@@ -6,13 +6,12 @@
 //a
 //
 
-import Foundation
 import Turnstile
 import HTTP
 import Auth
-import MongoKitten
 
 extension Request {
+    
     func mongoSubject() throws -> Subject {
         guard let subject = storage["subject"] as? Subject else {
             throw AuthError.noSubject

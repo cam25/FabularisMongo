@@ -7,8 +7,6 @@
 //
 
 import Turnstile
-import HTTP
-import Vapor
 import Auth
 
 public protocol MongoAuthentication: Account, MongoAuthenticator {
@@ -66,13 +64,3 @@ extension MongoAuthentication {
         return match
     }
 }
-
-//extension Request {
-//    func user() throws -> TriprUser {
-//        guard let user = try auth.user() as? TriprUser else {
-//            throw Abort.custom(status: .badRequest, message: "Invalid user type.")
-//        }
-//        
-//        return user
-//    }
-//}
