@@ -42,7 +42,7 @@ public protocol MongoModelRepresentable : ResponseRepresentable, JSONRepresentab
 
 extension MongoModelRepresentable {
     
-    static func entity(id _id : ObjectId) throws -> Self {
+    static public func entity(id _id : ObjectId) throws -> Self {
         return try Self(id: _id)
     }
     
