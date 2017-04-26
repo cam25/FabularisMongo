@@ -38,6 +38,8 @@ public protocol MongoModelRepresentable : ResponseRepresentable, JSONRepresentab
     func didInsert()
     func didDelete()
     
+    static func entity(id _id : ObjectId) throws -> Self
+    
 }
 
 extension MongoModelRepresentable {
