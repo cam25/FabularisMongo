@@ -13,7 +13,7 @@ import Auth
 import MongoKitten
 
 extension Request {
-    func triprSubject() throws -> Subject {
+    func mongoSubject() throws -> Subject {
         guard let subject = storage["subject"] as? Subject else {
             throw AuthError.noSubject
         }
@@ -30,7 +30,7 @@ fileprivate class Weak<T: AnyObject> {
 }
 
 extension Request {
-    public var auth: Helper {
+    public var mongoAuth: Helper {
         let key = "MongoAuth"
         
         guard let wrapper = storage[key] as? Weak<Helper>, let helper = wrapper.value else {
@@ -58,15 +58,15 @@ public final class Helper {
     }
     
     public func login(_ credentials: Credentials, persist: Bool = true) throws {
-        return try request.triprSubject().login(credentials: credentials, persist: persist)
+        return try request.mongoSubject().login(credentials: credentials, persist: persist)
     }
     
     public func logout() throws {
-        return try request.triprSubject().logout()
+        return try request.mongoSubject().logout()
     }
     
     public func user() throws -> MongoAuthentication {
-        let subject = try request.triprSubject()
+        let subject = try request.mongoSubject()
         
         guard let details = subject.authDetails else {
             throw AuthError.notAuthenticated
