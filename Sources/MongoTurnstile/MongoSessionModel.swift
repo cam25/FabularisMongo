@@ -10,7 +10,6 @@
 import MongoKitten
 import HTTP
 import Vapor
-import Foundation
 import Turnstile
 import MongoModel
 

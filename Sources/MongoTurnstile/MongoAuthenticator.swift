@@ -6,11 +6,11 @@
 //
 //
 
-import Foundation
+//import Foundation
 import Turnstile
 import HTTP
 import Auth
-import MongoKitten
+//import MongoKitten
 
 @_exported import protocol Turnstile.Credentials
 
@@ -18,16 +18,6 @@ public protocol MongoAuthenticator {
     static func authenticate(credentials: Credentials) throws -> MongoAuthentication
     static func register(credentials: Credentials) throws -> MongoAuthentication
 }
-
-extension Request {
-    func MongoSubject() throws -> Subject {
-        guard let subject = storage["subject"] as? Subject else {
-            throw AuthError.noSubject
-        }
-        return subject
-    }
-}
-
 
 // FilePrivate until we can move to Core
 fileprivate class Weak<T: AnyObject> {

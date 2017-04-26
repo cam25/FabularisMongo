@@ -67,7 +67,7 @@ public class MongoAuthMiddleware<U: MongoAuthentication>: Middleware {
         
         // If we have a new session, set a new cookie
         if
-            let sid = try request.subject().sessionIdentifier,
+            let sid = try request.mongoSubject().sessionIdentifier,
             request.cookies[cookieName] != sid ||
             refreshCookieEveryRequest
         {
@@ -75,7 +75,7 @@ public class MongoAuthMiddleware<U: MongoAuthentication>: Middleware {
             cookie.name = cookieName
             response.cookies.insert(cookie)
         } else if
-            try request.subject().sessionIdentifier == nil,
+            try request.mongoSubject().sessionIdentifier == nil,
             request.cookies[cookieName] != nil
         {
             // If we have a cookie but no session, delete it.
@@ -89,16 +89,6 @@ public class MongoAuthMiddleware<U: MongoAuthentication>: Middleware {
 extension Subject {
     var sessionIdentifier: String? {
         return authDetails?.sessionID
-    }
-}
-
-extension Request {
-    func subject() throws -> Subject {
-        guard let subject = storage["subject"] as? Subject else {
-            throw AuthError.noSubject
-        }
-        
-        return subject
     }
 }
 
