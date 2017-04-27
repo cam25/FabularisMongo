@@ -21,31 +21,6 @@ final class MongoSessionModel : MongoModelRepresentable, Account{
         self.modelId = _document["modelId"]! as! String
     }
 
-    
-    static var MongoDB: MongoKitten.Database {
-        get {
-           return MongoDatabaseProvider.instance.MongoDB!
-        }
-    }
-    
-    var uniqueID: String {
-        return self.id.hexString
-    }
-    
-    var id: ObjectId
-    var modelId : String
-    public var sessionId : String
-    var document : Document{
-        get {
-            return [ "_id" : self.id,
-                     "sessionId" : self.sessionId,
-                     "modelId" : self.modelId
-            ]
-        }set {
-            self.document = newValue
-        }
-    }
-    
     required init() {
         self.id = ObjectId()
         self.sessionId = ""
@@ -59,9 +34,31 @@ final class MongoSessionModel : MongoModelRepresentable, Account{
         }
         self.init(document: _document)
     }
-
+    
     convenience init?(sessionId _sessionid : String) throws {
         try self.init(from: _sessionid)
+    }
+
+    static var MongoDB: MongoKitten.Database {
+        get {
+           return MongoDatabaseProvider.instance.MongoDB!
+        }
+    }
+    var uniqueID: String {
+        return self.id.hexString
+    }
+    var id: ObjectId
+    var modelId : String
+    public var sessionId : String
+    var document : Document{
+        get {
+            return [ "_id" : self.id,
+                     "sessionId" : self.sessionId,
+                     "modelId" : self.modelId
+            ]
+        }set {
+            self.document = newValue
+        }
     }
     
     static func create(sessionId _sessionid : String, modelId _modelid : String) throws -> MongoSessionModel {

@@ -16,10 +16,10 @@ public protocol MongoModelRepresentable : ResponseRepresentable, JSONRepresentab
     
     //  Reference to document
     var document : MongoKitten.Document { get }
+//   singleton class for DB (maybe move to config instead)
     static var MongoDB : MongoKitten.Database { get }
     //  Reference to collection
     static var collection : MongoKitten.Collection { get }
-    
     // Reference to id
     var id : ObjectId {get set}
     
@@ -28,6 +28,7 @@ public protocol MongoModelRepresentable : ResponseRepresentable, JSONRepresentab
     func save() throws
     func insert() throws
     func delete() throws
+    
     static func all() throws -> [Self]
     static func prepare() throws
     static func revert() throws
@@ -46,10 +47,13 @@ public protocol MongoModelRepresentable : ResponseRepresentable, JSONRepresentab
 
 extension MongoModelRepresentable {
     
-//    static public func entity(id _id : ObjectId) throws -> Self {
-//        return try Self(id: _id)
-//    }
+    public static func prepare() throws {
+        
+    }
     
+    public static func revert() throws {
+        
+    }
     
     public init(id _id : ObjectId) throws
     {
@@ -58,13 +62,6 @@ extension MongoModelRepresentable {
         }
         self.init(document: document)
     }
-    
-//    let query : Query = "_id" == _id
-//    
-//    guard let _document = try Self.collection.findOne(query) else {
-//    fatalError()
-//    }
-//    self.init(document : _document)
     
     static var name: String {
         return String(describing: self).lowercased()
