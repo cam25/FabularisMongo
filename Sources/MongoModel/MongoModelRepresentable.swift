@@ -48,7 +48,7 @@ extension MongoModelRepresentable {
         return try Self(id: _id)
     }
     
-    init(id _id : ObjectId) throws
+    public init(id _id : ObjectId) throws
     {
         self.init()
         let query : Query = "_id" == _id
