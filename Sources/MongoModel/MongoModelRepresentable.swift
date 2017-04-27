@@ -11,11 +11,11 @@ import HTTP
 import Vapor
 import MongoKitten
 
-public protocol MongoModelRepresentable : ResponseRepresentable, JSONRepresentable, NodeRepresentable{
+public protocol MongoModelRepresentable : ResponseRepresentable, JSONRepresentable, NodeRepresentable,StringInitializable{
     init()
     
     //  Reference to document
-    var document : MongoKitten.Document { get set }
+    var document : MongoKitten.Document { get }
     static var MongoDB : MongoKitten.Database { get }
     //  Reference to collection
     static var collection : MongoKitten.Collection { get }
@@ -23,7 +23,7 @@ public protocol MongoModelRepresentable : ResponseRepresentable, JSONRepresentab
     // Reference to id
     var id : ObjectId {get set}
     
-    func fillByDocument(document: Document)
+    func loadModelDataFrom(document: Document)
     func save() throws
     func insert() throws
     func delete() throws
@@ -38,25 +38,28 @@ public protocol MongoModelRepresentable : ResponseRepresentable, JSONRepresentab
     func didInsert()
     func didDelete()
     
-    static func entity(id _id : ObjectId) throws -> Self
+    
+//    static func entity(id _id : ObjectId) throws -> Self
     
 }
 
 extension MongoModelRepresentable {
     
-    static public func entity(id _id : ObjectId) throws -> Self {
-        return try Self(id: _id)
-    }
+//    static public func entity(id _id : ObjectId) throws -> Self {
+//        return try Self(id: _id)
+//    }
+    
     
     public init(id _id : ObjectId) throws
     {
         self.init()
         let query : Query = "_id" == _id
+        
         guard let _document = try Self.collection.findOne(query) else {
             fatalError()
         }
         
-        self.fillByDocument(document: _document)
+        self.loadModelDataFrom(document: _document)
     }
     
     static var name: String {

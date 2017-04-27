@@ -58,16 +58,20 @@ final class MongoSessionModel : MongoModelRepresentable, Account{
         self.modelId = ""
     }
     
-    convenience init?(sessionId _sessionid : String) throws {
-        guard let _document = try MongoSessionModel.collection.findOne("sessionId" == _sessionid) else
+    convenience init?(from string: String) throws {
+        guard let _document = try MongoSessionModel.collection.findOne("sessionId" == string) else
         {
             return nil
         }
         self.init()
-        self.fillByDocument(document: _document)
+        self.loadModelDataFrom(document: _document)
+    }
+
+    convenience init?(sessionId _sessionid : String) throws {
+        try self.init(from: _sessionid)
     }
     
-    func fillByDocument(document: Document) {
+    func loadModelDataFrom(document: Document) {
         self.id = ObjectId(document["_id"])!
         self.sessionId = document["sessionId"]! as! String
         self.modelId = document["modelId"]! as! String
