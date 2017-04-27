@@ -21,7 +21,7 @@ public final class MongoDatabaseProvider {
 
     public static func addDatabase(URL _url : String) throws
     {
-        let db = MongoDatabaseProvider()
+        let db = MongoDatabaseProvider.instance
         db.MongoDB = try Database(_url)
     }
 }
