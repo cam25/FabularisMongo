@@ -23,7 +23,8 @@ public protocol MongoModelRepresentable : ResponseRepresentable, JSONRepresentab
     // Reference to id
     var id : ObjectId {get set}
     
-    func loadModelDataFrom(document: Document)
+    init(document _document : Document)
+    
     func save() throws
     func insert() throws
     func delete() throws
@@ -52,15 +53,18 @@ extension MongoModelRepresentable {
     
     public init(id _id : ObjectId) throws
     {
-        self.init()
-        let query : Query = "_id" == _id
-        
-        guard let _document = try Self.collection.findOne(query) else {
-            fatalError()
+        guard let document = try Self.collection.findOne("_id" == _id) else {
+            throw Abort.notFound
         }
-        
-        self.loadModelDataFrom(document: _document)
+        self.init(document: document)
     }
+    
+//    let query : Query = "_id" == _id
+//    
+//    guard let _document = try Self.collection.findOne(query) else {
+//    fatalError()
+//    }
+//    self.init(document : _document)
     
     static var name: String {
         return String(describing: self).lowercased()
@@ -95,13 +99,7 @@ extension MongoModelRepresentable {
     
     public static func all() throws -> [Self]
     {
-        var all = [Self]()
-        try Self.collection.find().forEach { (Document) in
-            let new = try Self(id: ObjectId(Document["_id"])!)
-            all.append(new)
-        }
-        
-        return all
+        return try Array((Self.collection.find().flatMap { Self.init(document: $0) }))
     }
     
     public func delete() throws
@@ -110,6 +108,8 @@ extension MongoModelRepresentable {
         try Self.collection.remove("_id" == self.id)
         didDelete()
     }
+    
+//    TODO: Pagination function
     
     
     
