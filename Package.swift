@@ -14,6 +14,7 @@ let package = Package(
         // Misc
         Target(name: "MongoModel"),
         Target(name: "MongoTurnstile", dependencies: ["MongoModel"]),
+        Target(name: "MongoSocial", dependencies: ["MongoModel"])
     ],
     dependencies: [
         .Package(url: "https://github.com/OpenKitten/MongoKitten.git", "4.0.0-vaportls"),
