@@ -20,9 +20,6 @@ final class MongoSessionManager: SessionManager{
     
     var cache : [MongoSessionModel] = [MongoSessionModel]()
     
-    
-    
-    
     public func restoreAccount(fromSessionID identifier: String) throws -> Account {
         
         guard let session = try getSessionModelBy(identifier: identifier) else
