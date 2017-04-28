@@ -14,16 +14,19 @@ public protocol MongoAuthentication: Account, MongoAuthenticator {
     
 }
 
+public enum AuthenticationType: Credentials {
+    case APIKey(APIKey), AccessToken(AccessToken), Identifier(Identifier)
+}
+
 extension MongoAuthentication {
-    public static func authenticate(credentials: Credentials) throws -> MongoAuthentication {
-        if let apiKey = credentials as? APIKey {
+    public static func authenticate(credentials: AuthenticationType) throws -> MongoAuthentication {
+        switch credentials {
+        case .APIKey(let apiKey):
             return try authenticate(apiKey: apiKey)
-        } else if let accessToken = credentials as? AccessToken {
+        case .AccessToken(let accessToken):
             return try authenticate(accessToken: accessToken)
-        } else if let identifier = credentials as? Identifier {
+        case .Identifier(let identifier):
             return try authenticate(identifier: identifier)
-        } else {
-            throw AuthError.unsupportedCredentials
         }
     }
     
